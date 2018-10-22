@@ -1,3 +1,4 @@
+//leetcode上的链表均没有头结点
 #include<iostream>
 using namespace std;
 
@@ -8,7 +9,7 @@ struct node {
 
 class MyLinkedList {
 private:
-	node *head; //头指针
+	node * head; //头指针
 	node *tail; //尾指针
 	int size;
 public:
@@ -18,7 +19,7 @@ public:
 		tail = nullptr;
 		size = 0;
 	}
-	
+
 	MyLinkedList(MyLinkedList& L)
 	{
 		int value;
@@ -48,7 +49,7 @@ public:
 		if (index >= size || index < 0) return -1;
 		node *cur = new node;
 		cur = head;
-		for (int i = 0;i < index; ++i) {
+		for (int i = 0; i < index; ++i) {
 			cur = cur->next;
 		}
 		return cur->val;
@@ -76,7 +77,7 @@ public:
 		tail = tail->next;
 		++size;
 	}
-		
+
 	/** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
 	void addAtIndex(int index, int val) {
 		if (index>size || index < 0) return;
@@ -142,7 +143,7 @@ public:
 	void print()
 	{
 		node *p = head;
-		while (p != NULL) 
+		while (p != NULL)
 		{
 			cout << p->val << " ";
 			p = p->next;
@@ -222,23 +223,40 @@ node* removeElements(node* head, int val) {
 	return head;
 }
 
-
+bool hasCycle(node *head)
+{
+	node *fast = head; //快指针
+	node *slow = head; //慢指针
+	while (fast != NULL && slow != NULL && fast->next != NULL)
+	{
+		slow = slow->next;
+		fast = fast->next->next;
+		if (fast == slow)
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 int main()
 {
 	MyLinkedList linkedList_1;
-	
+
 	for (int i = 1; i <= 7; i++)
 	{
 		linkedList_1.addAtTail(i);
 	}
-	for (int i = 7; i >= 1; i--)
+	linkedList_1.print();
+	
+	linkedList_1.getNode(6)->next = linkedList_1.getNode(3);
+	if (hasCycle(linkedList_1.getNode(0)))
 	{
-		linkedList_1.addAtTail(i);
+		cout << "链表有环" << endl;
 	}
-	linkedList_1.print();
-	removeElements(linkedList_1.getNode(0), 7);
-	linkedList_1.print();
-
+	else
+	{
+		cout << "链表无环" << endl;
+	}
 	return 0;
 }
